@@ -97,10 +97,8 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
         Profile defaultProfile;
         if ((mapping.get("profile") != null) && (mapping.get("profile")[1] != null)) {
             defaultProfile = Profile.valueOf(mapping.get("profile")[1]);
-            // defaultProfile = Profile.Editor;
         } else {
             defaultProfile = Profile.RegisteredUser;
-            // defaultProfile = Profile.Editor;
         }
         String defaultGroup = mapping.get("privilege")[1];
         //allow proper injection
@@ -147,13 +145,13 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
         // Assign default profile and default group
         // if not set by LDAP info or local database
         // if (user.getProfile() == null) { // believe this isnt executing because now user.getProfile is set in User class: private Profile _profile = Profile.RegisteredUser;
-        if (true) { // believe this isnt executing because now user.getProfile is set in User class: private Profile _profile = Profile.RegisteredUser;
+        if (true) {
             user.setProfile(defaultProfile);
             if (userDetails.getPrivileges().size() == 0 && defaultGroup != null) {
                 if (Log.isDebugEnabled(Geonet.LDAP)) {
                     Log.debug(
                         Geonet.LDAP,
-                        "  NONE privilege defined, setting privilege for group "
+                        "  No privilege defined, setting privilege for group "
                             + defaultGroup + " as "
                             + userDetails.getUser().getProfile());
                 }

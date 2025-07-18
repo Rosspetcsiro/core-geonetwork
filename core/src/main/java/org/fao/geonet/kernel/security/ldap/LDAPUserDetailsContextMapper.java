@@ -92,15 +92,13 @@ public class LDAPUserDetailsContextMapper extends
                 if (Log.isDebugEnabled(Geonet.LDAP)) {
                     Log.debug(
                         Geonet.LDAP,
-                        // "  No privilege defined, setting privilege for group "
-                        "  marlin4 customised: No privilege defined or successfully parsed, setting privilege for group "
+                        "  No privilege defined, setting privilege for group "
                             + defaultGroup + " as "
                             // + Profile.Editor); // default profile for csiro ldap accounts
                             + userDetails.getUser().getProfile());
                 }
                 userDetails
                     .addPrivilege(defaultGroup, userDetails.getUser().getProfile());
-                    // .addPrivilege(defaultGroup, Profile.Editor);
             }
         }
     }
