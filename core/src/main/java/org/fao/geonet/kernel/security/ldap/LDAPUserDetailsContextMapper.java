@@ -94,7 +94,6 @@ public class LDAPUserDetailsContextMapper extends
                         Geonet.LDAP,
                         "  No privilege defined, setting privilege for group "
                             + defaultGroup + " as "
-                            // + Profile.Editor); // default profile for csiro ldap accounts
                             + userDetails.getUser().getProfile());
                 }
                 userDetails
