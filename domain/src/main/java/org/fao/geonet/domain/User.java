@@ -67,7 +67,7 @@ public class User extends GeonetEntity implements UserDetails {
     private Set<Address> _addresses = new LinkedHashSet<>();
     private String _organisation;
     private String _kind;
-    private Profile _profile = Profile.RegisteredUser;
+    private Profile _profile = Profile.RegisteredUser; // some logic in ldap user mapping assume there is no default.
     private UserSecurity _security = new UserSecurity();
     private String _lastLoginDate;
     private Boolean _isEnabled;

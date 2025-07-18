@@ -64,7 +64,8 @@ public class LDAPUserDetailsContextMapper extends
         }
 
         // If no profile defined, use default profile
-        if (userDetails.getUser().getProfile() == null) {
+        // if (userDetails.getUser().getProfile() == null) { // this evaluates to false even if no LDAP profile is defined, because of a default setting for user profile class
+        if (true) {
             if (Log.isDebugEnabled(Geonet.LDAP)) {
                 Log.debug(Geonet.LDAP,
                     "  No profile defined in LDAP, using default profile "
@@ -91,12 +92,15 @@ public class LDAPUserDetailsContextMapper extends
                 if (Log.isDebugEnabled(Geonet.LDAP)) {
                     Log.debug(
                         Geonet.LDAP,
-                        "  No privilege defined, setting privilege for group "
+                        // "  No privilege defined, setting privilege for group "
+                        "  marlin4 customised: No privilege defined or successfully parsed, setting privilege for group "
                             + defaultGroup + " as "
+                            // + Profile.Editor); // default profile for csiro ldap accounts
                             + userDetails.getUser().getProfile());
                 }
                 userDetails
                     .addPrivilege(defaultGroup, userDetails.getUser().getProfile());
+                    // .addPrivilege(defaultGroup, Profile.Editor);
             }
         }
     }
