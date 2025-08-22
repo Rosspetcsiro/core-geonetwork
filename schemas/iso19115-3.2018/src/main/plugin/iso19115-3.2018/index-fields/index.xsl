@@ -753,18 +753,25 @@
             </xsl:for-each>
             }</maintenance>
         </xsl:for-each>
-
+        
+        <!-- Start change -->
         <xsl:for-each select="mri:resourceConstraints/*">
           <xsl:variable name="fieldPrefix" select="local-name()"/>
 
+          <!-- Existing fields  -->
+          <!--  remove one of these to prevent duplication. keep just otherConstraints as per above - seems to be like a catch all. -->
           <xsl:copy-of select="gn-fn-index:add-multilingual-field(concat($fieldPrefix, 'OtherConstraints'), mco:otherConstraints , $allLanguages)"/>
-
           <xsl:copy-of select="gn-fn-index:add-multilingual-field(concat($fieldPrefix, 'UseLimitation'), mco:useLimitation, $allLanguages)"/>
+          
+          <!-- Add indexing for graphic and reference -->
+          <xsl:copy-of select="gn-fn-index:add-multilingual-field(concat($fieldPrefix, 'ReferenceTitle'), mco:reference/*/cit:title, $allLanguages)"/>
+          
+          <!-- Index graphic linkage -->
+          <xsl:for-each select="mco:graphic/*/mcc:linkage/*/cit:linkage">
+            <xsl:copy-of select="gn-fn-index:add-multilingual-field(concat($fieldPrefix, 'GraphicLinkage'), ., $allLanguages)"/>
+          </xsl:for-each>
         </xsl:for-each>
-
-        <xsl:for-each select="mri:resourceConstraints/mco:MD_LegalConstraints/mco:otherConstraints">
-          <xsl:copy-of select="gn-fn-index:add-multilingual-field('license', ., $allLanguages)"/>
-        </xsl:for-each>
+        <!-- End change. -->
 
         <xsl:if test="*/gex:EX_Extent/*/gex:EX_BoundingPolygon">
           <hasBoundingPolygon>true</hasBoundingPolygon>
@@ -1193,16 +1200,18 @@
             <xsl:if test="$stepDateTimeZulu != ''">
               ,"date": "<xsl:value-of select="mrl:stepDateTime//gml:timePosition/text()"/>"
             </xsl:if>
-            ,"source": [
-            <xsl:for-each select="mrl:source/*[mrl:description/gco:CharacterString != '']">
-              {
-              "descriptionObject": <xsl:value-of
-              select="gn-fn-index:add-multilingual-field(
-                                          'description', mrl:description, $allLanguages, true())"/>
-              }
-              <xsl:if test="position() != last()">,</xsl:if>
-            </xsl:for-each>
-            ]
+            <xsl:if test="normalize-space(mrl:source) != ''">
+              ,"source": [
+              <xsl:for-each select="mrl:source/*[mrl:description/gco:CharacterString != '']">
+                {
+                "descriptionObject": <xsl:value-of
+                select="gn-fn-index:add-multilingual-field(
+                                            'description', mrl:description, $allLanguages, true())"/>
+                }
+                <xsl:if test="position() != last()">,</xsl:if>
+              </xsl:for-each>
+              ]
+            </xsl:if>
 
             <xsl:variable name="processor"
                           select="mrl:processor/*[.//cit:CI_Organisation/cit:name != '']"/>
@@ -1448,7 +1457,7 @@
     <xsl:variable name="email"
                   select="(.//cit:contactInfo/*/cit:address/*/cit:electronicMailAddress/gco:CharacterString)[1]"/>
     <xsl:variable name="phone"
-                  select="(.//cit:contactInfo/*/cit:phone/*/cit:number[normalize-space(.) != '']/*/text())[1]"/>
+                  select="(./cit:contactInfo/*/cit:phone/*/cit:number[normalize-space(.) != '']/*/text())[1]"/>
     <xsl:variable name="individualName"
                   select="(.//cit:CI_Individual/cit:name/gco:CharacterString/text())[1]"/>
     <xsl:variable name="positionName"

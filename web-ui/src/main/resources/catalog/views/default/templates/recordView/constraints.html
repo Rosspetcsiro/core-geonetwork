@@ -1,6 +1,8 @@
 <div
   data-ng-if="mdView.current.record.MD_LegalConstraintsUseLimitation
-                     || mdView.current.record.MD_LegalConstraintsOtherConstraints"
+                     || mdView.current.record.MD_LegalConstraintsOtherConstraints
+                     || mdView.current.record.MD_LegalConstraintsReferenceTitle
+                     || mdView.current.record.MD_LegalConstraintsGraphicLinkage"
   class="gn-margin-bottom flex-row"
 >
   <span class="badge badge-rounded" title="{{'legalConstraints' | translate}}">
@@ -18,6 +20,32 @@
       data-gn-metadata-object-field="MD_LegalConstraintsUseLimitation"
       data-record="mdView.current.record"
     ></p>
+
+    <!-- License Information -->
+    <div
+      data-ng-if="mdView.current.record.MD_LegalConstraintsReferenceTitle
+                         || mdView.current.record.MD_LegalConstraintsGraphicLinkage"
+      class="gn-margin-top"
+    >
+      <h3 data-translate="">license</h3>
+      
+      <div data-ng-if="mdView.current.record.MD_LegalConstraintsReferenceTitle">
+        <a data-ng-href="{{mdView.current.record.MD_LegalConstraintsReferenceLinkage}}" 
+           target="_blank"
+           data-ng-if="mdView.current.record.MD_LegalConstraintsReferenceLinkage">
+          {{mdView.current.record.MD_LegalConstraintsReferenceTitle}}
+        </a>
+        <span data-ng-if="!mdView.current.record.MD_LegalConstraintsReferenceLinkage">
+          {{mdView.current.record.MD_LegalConstraintsReferenceTitle}}
+        </span>
+      </div>
+      
+      <div data-ng-if="mdView.current.record.MD_LegalConstraintsGraphicLinkage" class="gn-margin-top">
+        <img data-ng-src="{{mdView.current.record.MD_LegalConstraintsGraphicLinkage}}" 
+             alt="License graphic"
+             style="max-width: 100px; height: auto;" />
+      </div>
+    </div>
   </div>
 </div>
 
